@@ -9,4 +9,6 @@ listen-address=::1
 listen-address={MAIN_IPV4}
 listen-address={MAIN_IPV6}
 
+host-record=MagicDNS,{MAIN_IPV4},{MAIN_IPV6}
+
 # В entrypoint.sh будут добавляться строки address=/домен/IP

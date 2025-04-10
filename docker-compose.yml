@@ -2,7 +2,7 @@ services:
   magicdns:
     build: .
     container_name: magicdns
-    
+
     # Используем host networking (работает только на Linux).
     # Все порты (53, 80, 443) будут слушаться контейнером напрямую на хосте.
     network_mode: "host"
