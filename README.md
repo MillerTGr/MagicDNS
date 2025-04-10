@@ -74,6 +74,17 @@ git clone https://github.com/MillerTGr/MagicDNS.git
 cd MagicDNS
 ```
 
+Укажите IP-адреса сервера в файле `docker-compose.yml`:
+```ini
+MAIN_IPV4=ваш_ipv4
+MAIN_IPV6=ваш_ipv6
+```
+
+Список доменов для проксирования (вводятся через запятую):
+```ini
+DOMAINS=chatgpt.com,openai.com
+```
+
 Соберите и запустите контейнер:
 ```bash
 docker compose up -d --build
