@@ -1,0 +1,24 @@
+services:
+  magicdns:
+    build: .
+    container_name: magicdns
+    
+    # Используем host networking (работает только на Linux).
+    # Все порты (53, 80, 443) будут слушаться контейнером напрямую на хосте.
+    network_mode: "host"
+
+    # Если захотите вернуться к "обычному" режиму (bridge-сеть):
+    # 1) закомментируйте или удалите строку network_mode: "host"
+    # 2) раскомментируйте блок ports
+    #
+    # ports:
+    #   - "53:53/udp"
+    #   - "80:80/tcp"
+    #   - "443:443/tcp"
+
+    environment:
+      - MAIN_IPV4=
+      - MAIN_IPV6=
+      - DOMAINS=chatgpt.com,openai.com
+
+    restart: unless-stopped

@@ -1,0 +1,51 @@
+# Подгружаем модуль stream в Alpine
+load_module /usr/lib/nginx/modules/ngx_stream_module.so;
+
+worker_processes auto;
+worker_rlimit_nofile 8192;
+
+events {
+    worker_connections 1024;
+}
+
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+http {
+    sendfile        on;
+    tcp_nopush      on;
+    tcp_nodelay     on;
+    keepalive_timeout 65;
+    
+    resolver 8.8.8.8 [2001:4860:4860::8888];
+
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        location / {
+            proxy_pass http://$host$request_uri;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+}
+
+stream {
+    resolver 1.1.1.1 [2606:4700:4700::1111];
+
+    server {
+        listen 443;
+        listen [::]:443;
+
+        ssl_preread on;
+        proxy_connect_timeout 5s;
+        proxy_timeout 10s;
+
+        proxy_pass $ssl_preread_server_name:443;
+    }
+}
